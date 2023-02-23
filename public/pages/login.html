@@ -1,0 +1,62 @@
+{% extends 'layouts/empty.html' %}
+
+{% block css %}
+  <style>
+    form {
+      max-width: 100%;
+      width: 450px
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+  <div class="vh-100 d-flex justify-content-center align-items-center">
+    <form class="shadow p-5 rounded" action="/login" method="POST">
+      <h3 class="text-center fw-bold">Login</h3>
+      <div class="mt-4">
+        <label class="form-label" for="username">Username</label>
+        <input id="username" class="form-control" type="text" name="username" value="{{ page.data.username or '' }}" autofocus>
+      </div>
+      <div class="mt-4">
+        <label class="form-label" for="password">Password</label>
+        <input id="password" class="form-control" type="password" name="password">
+      </div>
+      {% if page.error %}
+        <div class="alert alert-danger mt-4" role="alert">
+          Invalid username or password
+        </div>
+      {% endif %}
+      <div class="mt-4">
+        <button class="btn btn-primary w-100" type="submit">
+          Save
+          <div id="formLoading" class="d-none spinner-border-sm spinner-border ms-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </button>
+      </div>
+      <div class="mt-4">
+        <a class="text-center d-block" href="/register">No, account? Create a new one.</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+
+{% block js %}
+  <script>
+    $('form').validate({
+      rules: {
+        username: {
+          required: true
+        },
+        password: {
+          required: true
+        }
+      },
+      submitHandler: (form, evt) => {
+        $('#formLoading').removeClass('d-none')
+        $('form button').prop('disable', true);
+        form.submit();
+      }
+    })
+  </script>
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends 'layouts/empty.html' %}
+
+{% block body %}
+  <div class="vh-100 d-flex justify-content-center align-items-center">
+    <div class="d-flex flex-column">
+      <h3 class="mb-5">Welcome to Fake Bank </h3>
+      <p class="fw-bold mb-0">{{ page.username }}</p>
+      <p>{{ page.balance | currency }}</p>
+      <div>
+        <button class="btn btn-danger me-4" type="submit" data-bs-toggle="modal" data-bs-target="#modalDeleteAccount">Delete Account</button>
+        <div class="modal fade" id="modalDeleteAccount" tabindex="-1" aria-labelledby="modalDeleteAccount" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="modalDeleteAccount">Warning</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form action="/acc/delete" method="POST">
+                    <div class="alert alert-warning" role="alert">
+                      You won't be able to recovery your account once it has been deleted.
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button id="btnSubmitDeleteAcc" type="button" class="btn btn-danger">
+                    Delete
+                    <div id="formSendMoneyLoading" class="d-none spinner-border-sm spinner-border ms-3" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#modalSendMoney">Transfer Money</button>
+          <!-- Modal -->
+          <div class="modal fade" id="modalSendMoney" tabindex="-1" aria-labelledby="modalSendMoney" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="modalSendMoney">Send Money</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form action="/acc/balance/transfer" method="POST">
+                    <div>
+                      <label class="form-label" for="receiver">Receiver's Username</label>
+                      <input id="receiver" class="form-control" type="text" name="receiver">
+                    </div>
+                    <div class="mt-4">
+                      <label class="form-label" for="balance">Balance</label>
+                      <input id="balance" class="form-control" type="text" name="balance">
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button id="btnSubmitSendMoney" type="button" class="btn btn-primary">
+                    Save changes
+                    <div id="formSendMoneyLoading" class="d-none spinner-border-sm spinner-border ms-3" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+  <script>
+    $('#modalSendMoney form').validate({
+      rules: {
+        receiver: {
+          required: true
+        },
+        balance: {
+          required: true,
+          number: true,
+          min: 1
+        }
+      },
+      submitHandler: (form, evt) => {
+        $('#formSendMoneyLoading').removeClass('d-none');
+        $('#modalSendMoney').find('btn').attr('disabled', true);
+
+        form.submit();
+      }
+    });
+
+    $('#btnSubmitSendMoney').on('click', () => {
+      $('#modalSendMoney form').trigger('submit');
+    });
+
+    document.querySelector('#modalSendMoney').addEventListener('shown.bs.modal', () => {
+      $('#receiver').trigger('focus');
+    });
+
+    $('#btnSubmitDeleteAcc').on('click', () => {
+      $('#modalDeleteAccount form').trigger('submit');
+    })
+  </script>
+{% endblock %}

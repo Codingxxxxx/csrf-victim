@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+  db:
+    image: mongo
+    ports:
+      - 27017:27017
+  sessionStore:
+    image: redis
+    ports:
+      - 6379:6379
+    

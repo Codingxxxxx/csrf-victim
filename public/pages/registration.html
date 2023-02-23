@@ -1,0 +1,53 @@
+{% extends 'layouts/empty.html' %}
+
+{% block css %}
+  <style>
+    form {
+      width: 100%;
+      max-width: 450px;
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+  <div class="d-flex justify-content-center align-items-center vh-100">
+    <form class="shadow rounded p-5" action="/register" method="POST">
+      <h4 class="text-center text-bold">Crate an Account</h4>
+      <div class="mt-5">
+        <label class="form-label" for="username">User Name</label>
+        <input id="username" class="form-control" type="text" name="username">
+      </div>
+      <div class="mt-4">
+        <label class="form-label" for="password">Password</label>
+        <input id="password" class="form-control" type="password" name="password">
+      </div>
+      <div class="mt-4">
+        <label class="form-label" for="confirmPassword">Confirm Password</label>
+        <input id="confirmPassword" class="form-control" type="password" name="confirmPassword">
+      </div>
+      <div class="mt-4">
+        <button class="btn btn-primary w-100">Submit</button>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+
+{% block js %}
+  <script>
+    $('form').validate({
+      rules: {
+        username: {
+          required: true,
+          maxlength: 15
+        },
+        password: {
+          required: true
+        },
+        confirmPassword: {
+          required: true,
+          equalTo: '#password'
+        }
+      }
+    })
+  </script>
+{% endblock %}
