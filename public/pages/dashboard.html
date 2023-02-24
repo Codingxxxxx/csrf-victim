@@ -18,7 +18,9 @@
                 </div>
                 <div class="modal-body">
                   <form action="/acc/delete" method="POST">
-                    <input name="csrf" type="hidden" value="{{ global.csrf }}">
+                    {% if global.csrf %}
+                      <input type="hidden" value="{{ global.csrf }}" name="csrf">
+                    {% endif %}
                     <div class="alert alert-warning" role="alert">
                       You won't be able to recovery your account once it has been deleted.
                     </div>
@@ -46,7 +48,9 @@
                 </div>
                 <div class="modal-body">
                   <form action="/acc/balance/transfer" method="POST">
-                    <input name="csrf" type="hidden" value="{{ global.csrf }}">
+                    {% if global.csrf %}
+                      <input type="hidden" value="{{ global.csrf }}" name="csrf">
+                    {% endif %}
                     <div>
                       <label class="form-label" for="receiver">Receiver's Username</label>
                       <input id="receiver" class="form-control" type="text" name="receiver">
