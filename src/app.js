@@ -3,7 +3,6 @@ const express = require('express');
 const nunjucks = require('nunjucks');
 const app = express();
 const path = require('path');
-const csrf = require('csurf');
 const session = require('express-session');
 const { default: mongoose } = require('mongoose');
 const RedisStore = require('connect-redis')(session);
@@ -39,8 +38,9 @@ app.use(session({
   store: new RedisStore({ client: redisClient })
 }));
 
-if (process.env.CSRF === 'true') app.use(csrf());
+if (process.env.CSRF === 'true') app.use(require('./middlewares/csrf.middleware'));
 
+app.use(require('./middlewares/inject-data.middleware'));
 app.use(require('./routes'));
 
 console.log('Connecting to database');

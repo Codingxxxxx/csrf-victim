@@ -3,6 +3,7 @@
 {% block body %}
   <div class="vh-100 d-flex justify-content-center align-items-center">
     <div class="d-flex flex-column">
+      <h4>CSRF is {{ '<span class="text-success">enabled</span>'|safe if global.isCSRFEnabled else '<span class="text-danger">disabled</span>'|safe }}</h4>
       <h3 class="mb-5">Welcome to Fake Bank </h3>
       <p class="fw-bold mb-0">{{ page.username }}</p>
       <p>{{ page.balance | currency }}</p>
@@ -17,6 +18,7 @@
                 </div>
                 <div class="modal-body">
                   <form action="/acc/delete" method="POST">
+                    <input name="csrf" type="hidden" value="{{ global.csrf }}">
                     <div class="alert alert-warning" role="alert">
                       You won't be able to recovery your account once it has been deleted.
                     </div>
@@ -44,6 +46,7 @@
                 </div>
                 <div class="modal-body">
                   <form action="/acc/balance/transfer" method="POST">
+                    <input name="csrf" type="hidden" value="{{ global.csrf }}">
                     <div>
                       <label class="form-label" for="receiver">Receiver's Username</label>
                       <input id="receiver" class="form-control" type="text" name="receiver">

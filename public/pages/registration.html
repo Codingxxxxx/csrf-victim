@@ -12,6 +12,7 @@
 {% block body %}
   <div class="d-flex justify-content-center align-items-center vh-100">
     <form class="shadow rounded p-5" action="/register" method="POST">
+      <input type="hidden" value="{{ global.csrf }}" name="csrf">
       <h4 class="text-center text-bold">Crate an Account</h4>
       <div class="mt-5">
         <label class="form-label" for="username">User Name</label>
